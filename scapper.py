@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from operator import truediv
-from webbrowser import Chrome
 import pandas as pd
 import time
 
@@ -10,7 +8,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 
 chrome = webdriver.Chrome("selenium\chromedriver.exe")
-chrome.get("https://goo.gl/maps/2KJB4Qh5z4bDkhnKA")
+chrome.get("https://g.page/RoyalAmbarrukmo?share")
 time.sleep(5)
 xpathreview = "/html/body/div[3]/div[9]/div[9]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[1]/div[1]/div[2]/div/div[1]/div[2]/span[2]"
 
@@ -44,6 +42,12 @@ def get_body_review():
         else :
             print("No review")
 
+def check_review():
+    review = chrome.find_elements_by_xpath('.//span[@class="fzvQIb"]')
+    print ("review: ", len(review))
+
+
+
 def scrolling():
     print ("scrolling time")
     elm = chrome.find_element_by_xpath('//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]')
@@ -62,7 +66,7 @@ def scrolling():
         chrome.execute_script('arguments[0].scrollBy(0, 904);', side_review)
         time.sleep(2)
         new_height = chrome.execute_script("return arguments[0].scrollHeight", side_review)
-
+        check_review()
         print ("new height: ", new_height)
 
         if new_height == last_height:
@@ -82,14 +86,12 @@ def scroll_test():
     number = 0
     while True:
         number = number+1
-        scroll_size = chrome.execute_script("return document.body.scrollHeight")
-        print ("scroll size: ", scroll_size)
-        chrome.execute_script('arguments[0].scrollBy(0,' + str(scroll_size) + ');', elm)
-        time.sleep(1)
+        chrome.execute_script('arguments[0].scrollBy(0,' + str(last_height) + ');', elm)
+        time.sleep(2)
         new_height = chrome.execute_script("return arguments[0].scrollHeight", elm)
         print ("new height:", new_height)
         print ("last height:", last_height)
-
+        check_review()
         if new_height == last_height:
             break
         last_height = new_height
@@ -104,10 +106,10 @@ def scroll_test():
 review = chrome.find_element_by_xpath(xpathreview)
 print (review.text)
 review.click()
-time.sleep(3)
+time.sleep(1)
 sorereview = chrome.find_element_by_xpath(sorereview)
 sorereview.click()
-time.sleep(3)
+time.sleep(1)
 change = chrome.find_element_by_xpath("/html/body/div[3]/div[3]/div[1]/ul/li[2]").click()
 time.sleep(1)
 get_rating()
