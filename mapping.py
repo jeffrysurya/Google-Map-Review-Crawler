@@ -45,7 +45,7 @@ for review in range(len(reviews)):
     )
 
 with open('300.json', 'w', encoding='utf_8') as outfile:
-    json.dump(data, outfile)
+    json.dump(data, outfile, indent= 4)
 
 
 # cari body review
